@@ -1,4 +1,4 @@
-package Commentsanddocumentation;
+package comments;
 
 //: Comments_and_Documentation/Documentation1.java
 /** A class comment */

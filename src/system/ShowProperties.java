@@ -1,4 +1,4 @@
-package systemlib;
+package system;
 
 public class ShowProperties {
     public static void main(String[] args) {

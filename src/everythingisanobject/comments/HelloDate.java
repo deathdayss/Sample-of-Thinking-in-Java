@@ -1,4 +1,4 @@
-package comments;
+package everythingisanobject.comments;
 
 //: object/HelloDate.java
 import java.util.*;

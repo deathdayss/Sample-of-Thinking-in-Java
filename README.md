@@ -53,7 +53,7 @@ Add ```label:```  in front of ```for``` and while ```blocks``` then we can break
 ```this``` in an object refers to  the object itself.
 ### Calling constructors from constructors
 Use ```this``` to call other constructors from constructors.	
-### How a garbage collector works <a name = "book">
+### How a garbage collector works <a id = "book">
 1. *reference counting*(not used): each object contains a reference counter, and every time a reference is attached to that object, the reference count is increased. When the counter is zero, the storage is released. 
 The drawback is that if objects circularly refer to each other they can have nonzero reference counts while still being garbage.
 2. *stop-and-copy*: Program is first stopped. Then, each live object is copied from one heap to another, leaving behind all the garbage. it is based on the idea that any non-dead object must ultimately be traceable back to a reference that lives either on the stack or in static storage. 

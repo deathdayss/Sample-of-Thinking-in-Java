@@ -1,4 +1,4 @@
-package reusingclasses;
+package reusingclass;
 
 //: reusing/Bath.java
 // Constructor initialization with composition.

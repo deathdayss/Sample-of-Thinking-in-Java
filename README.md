@@ -442,7 +442,7 @@ k = 47
 j = 39
 *///:~
 ```
-The order: base-class static field -> derived-class static field -> base-class instance & constructros -> derived-class instance & constructros
+The order: base-class static field -> derived-class static field -> (Object created) -> base-class instance & constructros -> derived-class instance & constructros
 ## Polymorphism
 ## Interfaces
 ## Inner Classes

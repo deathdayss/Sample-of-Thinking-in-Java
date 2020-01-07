@@ -564,6 +564,7 @@ disposing Composing 4
 Disposing Shared 0
 *///:~
 ```
+The type of counter is long rather than int, to prevent overflow (this is just good practice; overflowing such a counter is not likely to happen in any of the examples in this book). The id is final because we do not expect it to change its value during the lifetime of the object.
 ## Interfaces
 ## Inner Classes
 ## Holding Your Objects

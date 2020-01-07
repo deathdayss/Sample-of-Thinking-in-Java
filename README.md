@@ -379,7 +379,7 @@ public class FinalArguments {
 } ///:~
 ```
 ### `final` and `private` methods
-Final methods cannot be overrided. Private methods are not interface of the base-class so you just create new methods in the derived class if you want to "override" the private methods.
+Final methods cannot be overridden. Private methods are not interface of the base-class so you just create new methods in the derived class if you want to "override" the private methods.
 ### `final` classes
 No class can inherit from final classes. All methods in a final class are implicitly final since there is no way to override them.
 ```java
@@ -442,8 +442,70 @@ k = 47
 j = 39
 *///:~
 ```
-The order: base-class static field -> derived-class static field -> (Object created) -> base-class instance & constructros -> derived-class instance & constructros
+The order: base-class static field -> derived-class static field -> (Object created) -> base-class instance & constructors-> derived-class instance & constructors.
 ## Polymorphism
+### Pitfall: fields and static methods
+Field accesses and static methods  are not polymorphism.  Different types of references use the field and the static methods of the type.
+```java
+//: polymorphism/FieldAccess.java
+// Direct field access is determined at compile time.
+class Super {
+    public int field = 0;
+    public int getField() { return field; }
+}
+class Sub extends Super {
+    public int field = 1;
+    public int getField() { return field; }
+    public int getSuperField() { return super.field; }
+}
+public class FieldAccess {
+    public static void main(String[] args) {
+        Super sup = new Sub(); // Upcast
+        System.out.println("sup.field = " + sup.field +
+                ", sup.getField() = " + sup.getField());
+        Sub sub = new Sub();
+        System.out.println("sub.field = " +
+                sub.field + ", sub.getField() = " +
+                sub.getField() +
+                ", sub.getSuperField() = " +
+                sub.getSuperField());
+    }
+} /* Output:
+sup.field = 0, sup.getField() = 1
+sub.field = 1, sub.getField() = 1, sub.getSuperField() = 0
+*///:~
+```
+```java
+//: polymorphism/StaticPolymorphism.java
+// Static methods are not polymorphic.
+class StaticSuper {
+    public static String staticGet() {
+        return "Base staticGet()";
+    }
+    public String dynamicGet() {
+        return "Base dynamicGet()";
+    }
+}
+class StaticSub extends StaticSuper {
+    public static String staticGet() {
+        return "Derived staticGet()";
+    }
+    public String dynamicGet() {
+        return "Derived dynamicGet()";
+    }
+}
+public class StaticPolymorphism {
+    public static void main(String[] args) {
+        StaticSuper sup = new StaticSub(); // Upcast
+        System.out.println(sup.staticGet());
+        System.out.println(sup.dynamicGet());
+    }
+} /* Output:
+Base staticGet()
+Derived dynamicGet()
+*///:~	
+```
+
 ## Interfaces
 ## Inner Classes
 ## Holding Your Objects

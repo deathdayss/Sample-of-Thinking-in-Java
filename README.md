@@ -666,6 +666,9 @@ public class Ex4 {
     }
 }
 ```
+### Interfaces
+* All interface fields are implicitly static and final.
+* methods in an interface are implicitly  public so the methods from the interface must be defined as public.
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

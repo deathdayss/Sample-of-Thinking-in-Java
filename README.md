@@ -59,7 +59,7 @@ This way is inefficient because of two issues. The first is that you have two he
 3. *mark-and-sweep*: Trace through all the references to find live objects and the program also stops. Each time it finds a live object, that object is marked by setting a flag in it. Only when the marking process is finished does the sweep occur. During the sweep, the dead objects are released.
 4. *adaptive garbage-collection scheme*: memory is allocated in big blocks. If you allocate a large object, it gets its own block. Each block has a generation count to keep track of whether it’s alive. In the normal case, only the blocks created since the last garbage collection are compacted; all other blocks get their generation count bumped if they have been referenced from somewhere. This handles the normal case of lots of short-lived temporary objects. Periodically, a full sweep is made—large objects are still not copied (they just get their generation count bumped), and blocks containing small objects are copied and compacted. The JVM monitors the efficiency of garbage collection and if it becomes a waste of time because all objects are long-lived, then it switches to mark-and-sweep. Similarly, the JVM keeps track of how successful mark-and-sweep is, and if the heap starts to become fragmented, it switches back to stop-and-copy.
 ### Member initialization
-Local variables must be initialized before using. The field variables automatically get an initial value. (Number types are 0. char is ' '. object reference is **null**)
+Local variables must be initialized before using. The field variables automatically get an initial value.(Number types are 0. char is ' '. object reference is **null**)
 ## 4. Access Control
 ### Interface and implementation
 ```java
@@ -120,12 +120,10 @@ public class Lunch {
 ## 5. Reusing Classes
 ### Composition syntax
 Simply place object references inside new classes. If you want the references initialized, you can do it:
+
 1. At the point the objects are defined. This means that they’ll always be initialized before the constructor is called.
-
 2. In the constructor for that class.
-
 3. Right before you actually need to use the object. This is often called *lazy initialization*. It can reduce overhead in situations where object creation is expensive and the object doesn’t need to be created every time.
-
 4. Using instance initialization. 
 
 All four approaches are shown here:
@@ -565,6 +563,49 @@ Disposing Shared 0
 *///:~
 ```
 The type of counter is long rather than int, to prevent overflow (this is just good practice; overflowing such a counter is not likely to happen in any of the examples in this book). The id is final because we do not expect it to change its value during the lifetime of the object.
+### Behavior of polymorphic methods inside constructors
+Inside an ordinary method, the dynamically-bound call is resolved at run time, because the object cannot know whether it belongs to the class that the method is in or some class derived from it.
+If you call a dynamically-bound method inside a constructor, the overridden definition for that method is used. You call a method that might manipulate members that haven’t been initialized yet—a sure recipe for disaster.
+
+```java
+//: polymorphism/PolyConstructors.java
+// Constructors and polymorphism
+// don’t produce what you might expect.
+class Glyph {
+    void draw() { System.out.println("Glyph.draw()"); }
+    Glyph() {
+        System.out.println("Glyph() before draw()");
+        draw();
+        System.out.println("Glyph() after draw()");
+    }
+}
+class RoundGlyph extends Glyph {
+    private int radius = 1;
+    RoundGlyph(int r) {
+        radius = r;
+        System.out.println("RoundGlyph.RoundGlyph(), radius = " + radius);
+    }
+    void draw() {
+        System.out.println("RoundGlyph.draw(), radius = " + radius);
+    }
+}
+public class PolyConstructors {
+    public static void main(String[] args) {
+        new RoundGlyph(5);
+    }
+} /* Output:
+Glyph() before draw()
+RoundGlyph.draw(), radius = 0
+Glyph() after draw()
+RoundGlyph.RoundGlyph(), radius = 5
+*///:~
+```
+1. The storage allocated for the object is initialized to binary zero before anything else happens.
+2. The base-class constructors are called as described previously. At this point, the overridden draw( ) method is called (yes, before the RoundGlyph constructor is called), which discovers a radius value of zero, due to Step 1.
+3. Member initializers are called in the order of declaration.
+4. The body of the derived-class constructor is called.
+
+As a result, a good guideline for constructors is, “Do as little as possible to set the object into a good state, and if you can possibly avoid it, don’t call any other methods in this class.” The only safe methods to call inside a constructor are those that are final in the base class. (This also applies to private methods, which are automatically final.)
 ## 7. Interfaces
 ## 8. Inner Classes
 ## 9. Holding Your Objects

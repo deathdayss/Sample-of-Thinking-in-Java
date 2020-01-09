@@ -607,6 +607,65 @@ RoundGlyph.RoundGlyph(), radius = 5
 
 As a result, a good guideline for constructors is, “Do as little as possible to set the object into a good state, and if you can possibly avoid it, don’t call any other methods in this class.” The only safe methods to call inside a constructor are those that are final in the base class. (This also applies to private methods, which are automatically final.)
 ## 7. Interfaces
+### Abstract classes and methods
+Ex3
+```java
+abstract class Dad {
+    protected abstract void print();
+    Dad() { print(); }
+}
+
+class Son extends Dad {
+    private int i = 1;
+    @Override protected void print() { System.out.println("Son.i = " + i); }
+}
+
+public class Ex3 {
+    public static void main(String[] args) {
+        /* Process of initialization:
+         * 1. Storage for Son s allocated and initialized to binary zero
+         * 2. Dad() called
+         * 3. Son.print() called in Dad() (s.i = 0)
+         * 4. Member initializers called in order (s.i = 1)
+         * 5. Body of Son() called
+         */
+        Son s = new Son();
+        s.print();
+    }
+}
+```
+Ex4
+```java
+abstract class Dad4 {
+}
+
+class Son4 extends Dad4 {
+    protected void print() { System.out.println("Son"); }
+}
+
+abstract class SecondDad {   // Add abstract method to the base class to prevent the downcast
+    abstract protected void print();
+}
+
+class SecondSon extends SecondDad {
+    protected void print() { System.out.println("SecondSon"); }
+}
+
+public class Ex4 {
+    public static void testPrint(Dad4 d) {
+        ((Son4)d).print();
+    }
+    public static void secondTestPrint(SecondDad sd) {
+        sd.print();
+    }
+    public static void main(String[] args) {
+        Son4 s = new Son4();
+        Ex4.testPrint(s);
+        SecondSon ss = new SecondSon();
+        Ex4.secondTestPrint(ss);
+    }
+}
+```
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

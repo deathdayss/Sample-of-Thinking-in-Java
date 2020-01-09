@@ -1,6 +1,6 @@
 ## Thinking in Java notes 
-## Operators
-## Controlling Execution
+## 1. Operators
+## 2. Controlling Execution
 ### The infamous “goto”
 ```java
 public class LabeledFor {
@@ -42,7 +42,7 @@ public class LabeledFor {
 }
 ```
 Add ```label:```  in front of ```for``` and while ```blocks``` then we can `break` out of loop or `continue` to the specific loop.  
-## Initialization & Cleanup
+## 3. Initialization & Cleanup
 ### Distinguishing overloaded methods
 1. Different type of arguments
 2. Different order of arguments
@@ -60,7 +60,7 @@ This way is inefficient because of two issues. The first is that you have two he
 4. *adaptive garbage-collection scheme*: memory is allocated in big blocks. If you allocate a large object, it gets its own block. Each block has a generation count to keep track of whether it’s alive. In the normal case, only the blocks created since the last garbage collection are compacted; all other blocks get their generation count bumped if they have been referenced from somewhere. This handles the normal case of lots of short-lived temporary objects. Periodically, a full sweep is made—large objects are still not copied (they just get their generation count bumped), and blocks containing small objects are copied and compacted. The JVM monitors the efficiency of garbage collection and if it becomes a waste of time because all objects are long-lived, then it switches to mark-and-sweep. Similarly, the JVM keeps track of how successful mark-and-sweep is, and if the heap starts to become fragmented, it switches back to stop-and-copy.
 ### Member initialization
 Local variables must be initialized before using. The field variables automatically get an initial value. (Number types are 0. char is ' '. object reference is **null**)
-## Access Control
+## 4. Access Control
 ### Interface and implementation
 ```java
 //: access/OrganizedByAccess.java
@@ -117,7 +117,7 @@ public class Lunch {
     }
 } ///:~
 ```
-## Reusing Classes
+## 5. Reusing Classes
 ### Composition syntax
 Simply place object references inside new classes. If you want the references initialized, you can do it:
 1. At the point the objects are defined. This means that they’ll always be initialized before the constructor is called.
@@ -443,7 +443,7 @@ j = 39
 *///:~
 ```
 The order: base-class static field -> derived-class static field -> (Object created) -> base-class instance & constructors-> derived-class instance & constructors.
-## Polymorphism
+## 6. Polymorphism
 ### Pitfall: fields and static methods
 Field accesses and static methods  are not polymorphism. Different types of references use the field and the static methods of the type.
 ```java
@@ -565,17 +565,17 @@ Disposing Shared 0
 *///:~
 ```
 The type of counter is long rather than int, to prevent overflow (this is just good practice; overflowing such a counter is not likely to happen in any of the examples in this book). The id is final because we do not expect it to change its value during the lifetime of the object.
-## Interfaces
-## Inner Classes
-## Holding Your Objects
-## Error Handling with Exception
-## Strings
-## Type Information
-## Generics
-## Arrays
-## Containers in Depth
-## I/O
-## Enumerated Types
-## Annotations
-## Concurrency
-## Graphical User Interfaces
+## 7. Interfaces
+## 8. Inner Classes
+## 9. Holding Your Objects
+## 10. Error Handling with Exception
+## 11. Strings
+## 12. Type Information
+## 13. Generics
+## 14. Arrays
+## 15. Containers in Depth
+## 16. I/O
+## 17. Enumerated Types
+## 18. Annotations
+## 19. Concurrency
+## 20. Graphical User Interfaces

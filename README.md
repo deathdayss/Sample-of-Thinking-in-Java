@@ -669,6 +669,182 @@ public class Ex4 {
 ### Interfaces
 * All interface fields are implicitly static and final.
 * methods in an interface are implicitly  public so the methods from the interface must be defined as public.
+### Complete decoupling (a little hard stuff)
+```java
+class Processor {
+    public String name() {
+        return getClass().getSimpleName();
+    }
+    Object process(Object input) { return input; }
+}
+
+class Upcase extends Processor {
+    String process(Object input) { // Covariant return
+        return ((String)input).toUpperCase();
+    }
+}
+
+class Downcase extends Processor {
+    String process(Object input) {
+        return ((String)input).toLowerCase();
+    }
+}
+
+class Splitter extends Processor {
+    String process(Object input) {
+// The split() argument divides a String into pieces:
+        return Arrays.toString(((String)input).split(" "));
+    }
+}
+public class Apply {
+    public static void process(Processor p, Object s) {
+        System.out.println("Using Processor " + p.name());
+        System.out.println(p.process(s));
+    }
+    public static String s =
+            "Disagreement with beliefs is by definition incorrect";
+    public static void main(String[] args) {
+        process(new Upcase(), s);
+        process(new Downcase(), s);
+        process(new Splitter(), s);
+    }
+} /* Output:
+Using Processor Upcase
+DISAGREEMENT WITH BELIEFS IS BY DEFINITION INCORRECT
+Using Processor Downcase
+disagreement with beliefs is by definition incorrect
+Using Processor Splitter
+[Disagreement, with, beliefs, is, by, definition, incorrect]
+*///:~
+```
+The Apply.process( ) method takes any kind of Processor and applies it to an Object, then prints the results. Creating a method that behaves differently depending on the argument object that you pass it is called the Strategy design pattern.
+Now suppose you discover a set of electronic filters that seem like they could fit into your Apply.process( ) method:
+```java
+package interfaces.classprocessor;
+
+public class Waveform {
+    private static long counter;
+    private final long id = counter++;
+    public String toString() { return "Waveform " + id; }
+} ///:~
+
+public class Filter {
+    public String name() {
+        return getClass().getSimpleName();
+    }
+    public Waveform process(Waveform input) { return input; }
+} ///:~
+
+public class LowPass extends Filter {
+    double cutoff;
+    public LowPass(double cutoff) { this.cutoff = cutoff; }
+    public Waveform process(Waveform input) {
+        return input; // Dummy processing
+    }
+} ///:~
+
+public class HighPass extends Filter {
+    double cutoff;
+    public HighPass(double cutoff) { this.cutoff = cutoff; }
+    public Waveform process(Waveform input) { return input; }
+} ///:~
+
+public class BandPass extends Filter {
+    double lowCutoff, highCutoff;
+    public BandPass(double lowCut, double highCut) {
+        lowCutoff = lowCut;
+        highCutoff = highCut;
+    }
+    public Waveform process(Waveform input) { return input; }
+} ///:~
+```
+Filter has the same interface elements as Processor, but because it isn’t inherited from Processor—because the creator of the Filter class had no clue you might want to use it as a Processor—you can’t use a Filter with the Apply.process( ) method, even though it would work fine.
+If Processor is an interface, however, the constraints are loosened enough that you can reuse an Apply.process( ) that takes that interface. Here are the modified versions of Processor and Apply:
+```java
+package interfaces.interfaceprocessor;
+
+public interface Processor {
+    String name();
+    Object process(Object input);
+} ///:~
+
+public class Apply {
+    public static void process(Processor p, Object s) {
+        System.out.println("Using Processor " + p.name());
+        System.out.println(p.process(s));
+    }
+} ///:~
+
+public abstract class StringProcessor implements Processor{
+    public String name() {
+        return getClass().getSimpleName();
+    }
+    public abstract String process(Object input);
+    public static String s =
+            "If she weighs the same as a duck, she’s made of wood";
+    public static void main(String[] args) {
+        Apply.process(new Upcase(), s);
+        Apply.process(new Downcase(), s);
+        Apply.process(new Splitter(), s);
+    }
+}
+
+class Upcase extends StringProcessor {
+    public String process(Object input) { // Covariant return
+        return ((String)input).toUpperCase();
+    }
+}
+
+class Downcase extends StringProcessor {
+    public String process(Object input) {
+        return ((String)input).toLowerCase();
+    }
+}
+
+class Splitter extends StringProcessor {
+    public String process(Object input) {
+        return Arrays.toString(((String)input).split(" "));
+    }
+} /* Output:
+Using Processor Upcase
+IF SHE WEIGHS THE SAME AS A DUCK, SHE’S MADE OF WOOD
+Using Processor Downcase
+if she weighs the same as a duck, she’s made of wood
+Using Processor Splitter
+[If, she, weighs, the, same, as, a, duck,, she’s, made, of, wood]
+*///:~
+```
+However, you are often in the situation of not being able to modify the classes that you want to use. In these cases, you can use the Adapter design pattern. In Adapter, you write code to take the interface that you have and produce the interface that you need, like this:
+```java
+import interfaces.filters.*;
+class FilterAdapter implements Processor {
+    Filter filter;
+    public FilterAdapter(Filter filter) {
+        this.filter = filter;
+    }
+    public String name() { return filter.name(); }
+    public Waveform process(Object input) {
+        return filter.process((Waveform)input);
+    }
+}
+public class FilterProcessor {
+    public static void main(String[] args) {
+        Waveform w = new Waveform();
+        Apply.process(new FilterAdapter(new LowPass(1.0)), w);
+        Apply.process(new FilterAdapter(new HighPass(2.0)), w);
+        Apply.process(
+                new FilterAdapter(new BandPass(3.0, 4.0)), w);
+    }
+} /* Output:
+Using Processor LowPass
+Waveform 0
+Using Processor HighPass
+Waveform 0
+Using Processor BandPass
+Waveform 0
+*///:~
+```
+In this approach to Adapter, the FilterAdapter constructor takes the interface that you have—Filter—and produces an object that has the Processor interface that you need. You may also notice delegation in the FilterAdapter class.
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

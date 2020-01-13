@@ -859,6 +859,29 @@ Core reasons for interfaces:
 
 This brings up a question: Should you use an interface or an abstract class? If it’s possible to create your base class without any method definitions or member variables, you should always prefer interfaces to abstract classes. In fact, if you know something is going to be a base class, you can consider making it an interface
 
+### Name collisions when combining Interfaces
+```java
+interface I1 { void f(); }
+interface I2 { int f(int i); }
+interface I3 { int f(); }
+class C { public int f() { return 1; } }
+class C2 implements I1, I2 {
+    public void f() {}
+    public int f(int i) { return 1; } // overloaded
+}
+class C3 extends C implements I2 {
+    public int f(int i) { return 1; } // overloaded
+}
+public class C4 extends C implements I3 {
+    // Identical, no problem:
+    public int f() { return 1; }
+}
+// Methods differ only by return type:
+//! class C5 extends C implements I1 {}
+//! interface I4 extends I1, I3 {} ///:~
+```
+The difficulty occurs because overriding, implementation, and overloading get unpleasantly mixed together. Also, overloaded methods cannot differ only by return type.
+Using the same method names in different interfaces that are intended to be combined generally causes confusion in the readability of the code, as well. Strive to avoid it.
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

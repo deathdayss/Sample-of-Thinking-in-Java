@@ -506,6 +506,7 @@ Derived dynamicGet()
 ### Inheritance and cleanup
 When cleaning up in inheritance, each layer of the class should dispose its own field and call its super's dispose. The order of disposal should be the reverse of the order of initialization, in case one subobject is dependent on another. Perform the derived-class cleanup first, then the base-class cleanup.
 Use reference counting to tell if a reference of a field should be cleaned.
+
 ```java
 //: polymorphism/ReferenceCounting.java
 // Cleaning up shared member objects.
@@ -717,8 +718,9 @@ Using Processor Splitter
 [Disagreement, with, beliefs, is, by, definition, incorrect]
 *///:~
 ```
-The Apply.process( ) method takes any kind of Processor and applies it to an Object, then prints the results. Creating a method that behaves differently depending on the argument object that you pass it is called the Strategy design pattern.
-Now suppose you discover a set of electronic filters that seem like they could fit into your Apply.process( ) method:
+The `Apply.process( )` method takes any kind of `Processor` and applies it to an Object, then prints the results. Creating a method that behaves differently depending on the argument object that you pass it is called the Strategy design pattern.
+Now suppose you discover a set of electronic filters that seem like they could fit into your `Apply.process( )` method:
+
 ```java
 package interfaces.classprocessor;
 
@@ -758,8 +760,9 @@ public class BandPass extends Filter {
     public Waveform process(Waveform input) { return input; }
 } ///:~
 ```
-Filter has the same interface elements as Processor, but because it isn’t inherited from Processor—because the creator of the Filter class had no clue you might want to use it as a Processor—you can’t use a Filter with the Apply.process( ) method, even though it would work fine.
-If Processor is an interface, however, the constraints are loosened enough that you can reuse an Apply.process( ) that takes that interface. Here are the modified versions of Processor and Apply:
+Filter has the same interface elements as `Processor`, but because it isn’t inherited from `Processor`—because the creator of the `Filter` class had no clue you might want to use it as a `Processor`—you can’t use a `Filter` with the `Apply.process( )` method, even though it would work fine.
+If `Processor` is an interface, however, the constraints are loosened enough that you can reuse an `Apply.process( )` that takes that interface. Here are the modified versions of `Processor` and `Apply`:
+
 ```java
 package interfaces.interfaceprocessor;
 
@@ -844,7 +847,18 @@ Using Processor BandPass
 Waveform 0
 *///:~
 ```
-In this approach to Adapter, the FilterAdapter constructor takes the interface that you have—Filter—and produces an object that has the Processor interface that you need. You may also notice delegation in the FilterAdapter class.
+In this approach to Adapter, the `FilterAdapter` constructor takes the interface that you have—`Filter`—and produces an object that has the `Processor` interface that you need. You may also notice delegation in the `FilterAdapter` class.
+
+### “Multiple inheritance” in Java
+
+When you combine a concrete class with interfaces this way, the concrete class must come first, then the interfaces. (The compiler gives an error otherwise.)
+
+Core reasons for interfaces:
+1. Upcast to more than one base type (and the flexibility that this provides).
+2. The same as using an abstract base class: to prevent the client programmer from making an object of this class and to establish that it is only an interface.
+
+This brings up a question: Should you use an interface or an abstract class? If it’s possible to create your base class without any method definitions or member variables, you should always prefer interfaces to abstract classes. In fact, if you know something is going to be a base class, you can consider making it an interface
+
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

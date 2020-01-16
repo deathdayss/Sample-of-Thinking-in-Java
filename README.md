@@ -1023,6 +1023,54 @@ As an added twist, interfaces can also be `private`, as seen in `A.D` (the same 
 The method `getD( )` produces a further quandary concerning the `private` interface: It’s a `public` method that returns a reference to a `private` interface. What can you do with the return value of this method? In `main( )`, you can see several attempts to use the return value, all of which fail. The only thing that works is if the return value is handed to an object that has permission to use it—in this case, another `A`, via the `receiveD( )` method.
 Interface `E` shows that an interface nested within another interface is automatically `public` and cannot be made `private`.
 `Nestinglnterfaces` shows the various ways that nested interfaces can be implemented. In particular, notice that when you implement an interface, you are not required to implement any interfaces nested within. Also, `private` interfaces cannot be implemented outside of their defining classes.
+### Interfaces and factories
+An interface is intended to be a gateway to multiple implementations, and a typical way to produce objects that fit the interface is the Factory Method design pattern. Instead of calling a constructor directly, you call a creation method on a factory object which produces an implementation of the interface—this way, in theory, your code is completely isolated from the implementation of the interface, thus making it possible to transparently swap one implementation for another. Here’s a demonstration showing the structure of the Factory Method:
+```java
+interface Service {
+    void method1();
+    void method2();
+}
+interface ServiceFactory {
+    Service getService();
+}
+class Implementation1 implements Service {
+    Implementation1() {} // Package access
+    public void method1() {System.out.println("Implementation1 method1");}
+    public void method2() {System.out.println("Implementation1 method2");}
+}
+class Implementation1Factory implements ServiceFactory {
+    public Service getService() {
+        return new Implementation1();
+    }
+}
+class Implementation2 implements Service {
+    Implementation2() {} // Package access
+    public void method1() {System.out.println("Implementation2 method1");}
+    public void method2() {System.out.println("Implementation2 method2");}
+}
+class Implementation2Factory implements ServiceFactory {
+    public Service getService() {
+        return new Implementation2();
+    }
+}
+public class Factories {
+    public static void serviceConsumer(ServiceFactory fact) {
+        Service s = fact.getService();
+        s.method1();
+        s.method2();
+    }
+    public static void main(String[] args) {
+        serviceConsumer(new Implementation1Factory());
+// Implementations are completely interchangeable:
+        serviceConsumer(new Implementation2Factory());
+    }
+} /* Output:
+Implementation1 method1
+Implementation1 method2
+Implementation2 method1
+Implementation2
+```
+Without the Factory Method, your code would somewhere have to specify the exact type of Service being created, so that it could call the appropriate constructor.
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

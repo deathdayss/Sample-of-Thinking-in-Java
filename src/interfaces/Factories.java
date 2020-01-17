@@ -42,4 +42,5 @@ public class Factories {
 Implementation1 method1
 Implementation1 method2
 Implementation2 method1
-Implementation2
+Implementation2 method2
+*///:~

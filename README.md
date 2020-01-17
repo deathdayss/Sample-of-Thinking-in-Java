@@ -1072,7 +1072,7 @@ Implementation2
 ```
 Without the Factory Method, your code would somewhere have to specify the exact type of Service being created, so that it could call the appropriate constructor.
 ### Using .this and .new
-If you need to produce the reference to the outer-class object, you name the outer class followed by a dot and this.
+If you need to produce the reference to the outer-class object, you name the outer class followed by a dot and `this`.
 ```java
 // Qualifying access to the outer-class object.
 public class DotThis {
@@ -1093,7 +1093,7 @@ public class DotThis {
 DotThis.f()
 *///:~
 ```
-Sometimes you want to tell some other object to create an object of one of its inner classes. To do this you must provide a reference to the other outer-class object in the new expression, using the .new syntax, like this:
+Sometimes you want to tell some other object to create an object of one of its inner classes. To do this you must provide a reference to the other outer-class object in the new expression, using the `.new` syntax, like this:
 ```java
 public class DotNew {
     public class Inner {}
@@ -1103,6 +1103,39 @@ public class DotNew {
     }
 } ///:~
 ```
+### Inner classes and upcasting
+When you get a reference to the base class or the interface, it’s possible that you can’t even find out the exact type, as shown here:
+```java
+class Parcel4 {
+    private class PContents implements Contents {
+        private int i = 11;
+        public int value() { return i; }
+    }
+    protected class PDestination implements Destination {
+        private String label;
+        private PDestination(String whereTo) {
+            label = whereTo;
+        }
+        public String readLabel() { return label; }
+    }
+    public Destination destination(String s) {
+        return new PDestination(s);
+    }
+    public Contents contents() {
+        return new PContents();
+    }
+}
+public class TestParcel {
+    public static void main(String[] args) {
+        Parcel4 p = new Parcel4();
+        Contents c = p.contents();
+        Destination d = p.destination("Tasmania");
+// Illegal -- can’t access private class:
+//! Parcel4.PContents pc = p.new PContents();
+    }
+} ///:~
+```
+In fact, you can’t even downcast to a `private` inner class (or a `protected` inner class unless you’re an inheritor), because you can’t access the name, as you can see in` class TestParcel`. Thus, the `private` inner class provides a way for the class designer to completely prevent any type-coding dependencies and to completely hide details about implementation. In addition, extension of an interface is useless from the client programmer’s perspective since the client programmer cannot access any additional methods that aren’t part of the `public` interface. This also provides an opportunity for the Java compiler to generate more efficient code.
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

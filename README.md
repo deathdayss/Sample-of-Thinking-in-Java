@@ -1071,6 +1071,38 @@ Implementation2 method1
 Implementation2
 ```
 Without the Factory Method, your code would somewhere have to specify the exact type of Service being created, so that it could call the appropriate constructor.
+### Using .this and .new
+If you need to produce the reference to the outer-class object, you name the outer class followed by a dot and this.
+```java
+// Qualifying access to the outer-class object.
+public class DotThis {
+    void f() { System.out.println("DotThis.f()"); }
+    public class Inner {
+        public DotThis outer() {
+            return DotThis.this;
+// A plain "this" would be Inner’s "this"
+        }
+    }
+    public Inner inner() { return new Inner(); }
+    public static void main(String[] args) {
+        DotThis dt = new DotThis();
+        DotThis.Inner dti = dt.inner();
+        dti.outer().f();
+    }
+} /* Output:
+DotThis.f()
+*///:~
+```
+Sometimes you want to tell some other object to create an object of one of its inner classes. To do this you must provide a reference to the other outer-class object in the new expression, using the .new syntax, like this:
+```java
+public class DotNew {
+    public class Inner {}
+    public static void main(String[] args) {
+        DotNew dn = new DotNew();
+        DotNew.Inner dni = dn.new Inner();
+    }
+} ///:~
+```
 ## 8. Inner Classes
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception

@@ -1137,6 +1137,14 @@ public class TestParcel {
 ```
 In fact, you can’t even downcast to a `private` inner class (or a `protected` inner class unless you’re an inheritor), because you can’t access the name, as you can see in` class TestParcel`. Thus, the `private` inner class provides a way for the class designer to completely prevent any type-coding dependencies and to completely hide details about implementation. In addition, extension of an interface is useless from the client programmer’s perspective since the client programmer cannot access any additional methods that aren’t part of the `public` interface. This also provides an opportunity for the Java compiler to generate more efficient code.
 ## 8. Inner Classes
+### Inner classes in methods and scopes
+The inner class can be used:
+1. A class defined within a method
+2. A class defined within a scope inside a method
+3. An anonymous class implementing an interface
+4. An anonymous class extending a class that has a non-default constructor
+5. An anonymous class that performs field initialization
+6. An anonymous class that performs construction using instance
 ## 9. Holding Your Objects
 ## 10. Error Handling with Exception
 ## 11. Strings

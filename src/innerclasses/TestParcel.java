@@ -1,6 +1,8 @@
 package innerclasses;
 
-interface Contents { }
+interface Contents {
+    int value();
+}
 
 class Parcel4 {
     private class PContents implements Contents {

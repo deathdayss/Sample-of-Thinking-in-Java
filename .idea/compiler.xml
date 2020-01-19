@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Sample of Thinking in Java" options="--add-exports=jdk.internal.vm.compiler/org.graalvm.compiler.debug=ALL-UNNAMED" />
+      <module name="Thinking in Java notes" options="--add-exports=jdk.internal.vm.compiler/org.graalvm.compiler.debug=ALL-UNNAMED" />
     </option>
   </component>
 </project>

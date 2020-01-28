@@ -5,6 +5,7 @@ interface Counter {
 }
 public class LocalInnerClass {
     private int count = 0;
+    class Self {}
     Counter getCounter(final String name) {
 // A local inner class:
         class LocalCounter implements Counter {
@@ -23,7 +24,7 @@ public class LocalInnerClass {
     Counter getCounter2(final String name) {
         return new Counter() {
             // Anonymous inner class cannot have a named
-// constructor, only an instance initializer:
+            // constructor, only an instance initializer:
             {
                 System.out.println("Counter()");
             }

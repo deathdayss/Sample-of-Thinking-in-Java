@@ -1,7 +1,6 @@
 package holdingyourobject;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 class Snow {}
 class Powder extends Snow {}

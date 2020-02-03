@@ -7,7 +7,7 @@
 ## 6. [Polymorphism](https://github.com/deathdayss/Sample_of_Thinking_in_Java/blob/master/src/polymorphism/6.%20Polymorphism.md)
 ## 7. [Interfaces](https://github.com/deathdayss/Sample_of_Thinking_in_Java/blob/master/src/interfaces/7.%20Interfaces.md)
 ## 8. [Inner Classes](https://github.com/deathdayss/Sample_of_Thinking_in_Java/blob/master/src/innerclasses/8.%20Inner%20Classes.md)
-## 9. [Holding Your Objects]
+## 9. [Holding Your Objects]([https://github.com/deathdayss/Sample-of-Thinking-in-Java/blob/master/src/holdingyourobject/9.%20Holding%20Your%20Object.md](https://github.com/deathdayss/Sample-of-Thinking-in-Java/blob/master/src/holdingyourobject/9. Holding Your Object.md))
 ## 10. [Error Handling with Exception]
 ## 11. [Strings]
 ## 12. [Type Information]

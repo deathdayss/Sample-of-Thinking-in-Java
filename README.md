@@ -1,4 +1,4 @@
-## Thinking in Java notes 
+# Thinking in Java notes 
 ## 1. [Operators](https://github.com/deathdayss/Sample_of_Thinking_in_Java/tree/master/src/Operators)
 ## 2. [Controlling Execution](https://github.com/deathdayss/Sample_of_Thinking_in_Java/blob/master/src/controllingExecution/2.%20Controlling%20Execution.md)
 ## 3. [Initialization & Cleanup](https://github.com/deathdayss/Sample_of_Thinking_in_Java/blob/master/src/initializationCleanup/3.%20Initialization%20%26%20Cleanup.md)

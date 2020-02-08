@@ -9,7 +9,7 @@ class ReversibleArrayList<T> extends ArrayList<T> {
                 return new Iterator<T>() {
                     int current = size() - 1;
                     public boolean hasNext() { return current > -1; }
-                    public T next() { return get(current--); }·
+                    public T next() { return get(current--); }
                     public void remove() { // Not implemented
                         throw new UnsupportedOperationException();
                     }
